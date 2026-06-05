@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Edit Cue</h1>
+
+    <form action="/cue/{{ cue['id'] }}/edit" method="post">
+        <input name="title" type="text" value="{{ cue['title'] }}">
+
+        <br><br>
+
+        <input name="start_timecode" type="text" value="{{ cue['start_timecode'] }}" placeholder="Start Timecode">
+
+
+        <br><br>
+
+        <input name="duration" type="text" value="{{ cue['duration'] }}" placeholder="Duration">
+
+        <br><br>
+
+        <label>Status:</label>
+        <select name="status" class="status-select">
+            <option value="Sketching" {% if cue["status"] == "Sketching" %}selected{% endif %}>Sketching</option>
+            <option value="Orchestrating" {% if cue["status"] == "Orchestrating" %}selected{% endif %}>Orchestrating</option>
+            <option value="Recording" {% if cue["status"] == "Recording" %}selected{% endif %}>Recording</option>
+            <option value="Mixing" {% if cue["status"] == "Mixing" %}selected{% endif %}>Mixing</option>
+            <option value="Done" {% if cue["status"] == "Done" %}selected{% endif %}>Done</option>
+        </select>
+
+        <br><br>
+
+        <textarea name="notes" placeholder="Cue notes">{{ cue["notes"] }}</textarea>
+
+        <br><br>
+
+        <button type="submit">Save Cue</button>
+    </form>
+
+    <p>
+        <a href="/project/{{ cue['project_id'] }}">Cancel</a>
+    </p>
+
+
+{% endblock %}

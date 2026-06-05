@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Create New Project</h1>
+
+    <form action="/new_project" method="post">
+        <input name="title" placeholder="Project title" type="text">
+
+        <br><br>
+
+        <textarea name="description" placeholder="Project description"></textarea>
+
+        <br><br>
+
+        <button type="submit">Create Project</button>
+    </form>
+
+    <p>
+        <a href="/dashboard">Back to dashboard</a>
+    </p>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Your Projects</h1>
+
+    <p>
+        <a class="button" href="/new_project">Create New Project</a>
+    </p>
+
+    {% if projects %}
+        {% for project in projects %}
+            <div class="card">
+                <h2>
+                    <a href="/project/{{ project['id'] }}">
+                        {{ project["title"] }}
+                    </a>
+                </h2>
+                <p>{{ project["description"] }}</p>
+                <small>Created: {{ project["created_at"] }}</small>
+
+                <br><br>
+
+                <form 
+                    action="/project/{{ project['id'] }}/delete" 
+                    method="post"
+                    data-title="{{ project['title'] }}"
+                    onsubmit="return confirmProjectDelete(this);"
+                >
+                    <button type="submit">Remove project</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No projects yet.</p>
+    {% endif %}
+{% endblock %}

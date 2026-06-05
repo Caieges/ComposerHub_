@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ComposerHub</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+            {% if session["user_id"] %}
+                <a class="logo" href="/dashboard">ComposerHub</a>
+            {% else %}
+                <a class="logo" href="/">ComposerHub</a>
+            {% endif %}
+
+            <nav>
+                {% if session["user_id"] %}
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/new_project">New Project</a>
+                    <a href="/logout">Log out</a>
+                {% else %}
+                    <a href="/">Home</a>
+                    <a href="/login">Log in</a>
+                    <a href="/register">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-modal">
+                    <div class="flash-box">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+
+                        <button onclick="this.closest('.flash-modal').remove()">OK</button>
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block main %}
+        {% endblock %}
+    </main>
+
+    <script>
+    async function updateCueStatus(selectElement) {
+        const cueId = selectElement.dataset.cueId;
+        const status = selectElement.value;
+
+        const response = await fetch(`/cue/${cueId}/status`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `status=${encodeURIComponent(status)}`
+        });
+
+        if (!response.ok) {
+            alert("Failed to update status.");
+        }
+    }
+    </script>
+
+    <script>
+    function confirmProjectDelete(formElement) {
+        const title = formElement.dataset.title;
+        return confirm(`Delete Project "${title}" permanently?`);
+    }
+    </script>
+
+    <script>
+    function confirmCueDelete(formElement) {
+        const title = formElement.dataset.title;
+        return confirm(`Delete cue "${title}" permanently?`);
+    }
+    </script>
+
+
+</body>
+</html>

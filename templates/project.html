@@ -1,0 +1,237 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>{{ project["title"] }}</h1>
+
+<p>{{ project["description"] }}</p>
+
+<p>
+    <a class="button" href="/project/{{ project['id'] }}/edit">
+        Edit Project Info
+    </a>
+</p>
+
+
+    <p>Created: {{ project["created_at"] }}</p>
+
+
+    <h2>Project Reference Files</h2>
+
+    <form action="/project/{{ project['id'] }}/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload Project File</button>
+    </form>
+
+    {% if project_files %}
+        {% for file in project_files %}
+            <div>
+                <h4>{{ file["original_filename"] }}</h4>
+                {% if file["file_type"] in ["mp3", "wav", "m4a", "flac", "aiff"] %}
+                    <audio controls>
+                        <source src="/uploads/{{ file['stored_filename'] }}">
+                        Your browser does not support audio playback.
+                    </audio>
+
+                {% elif file["file_type"] in ["mp4", "mov", "avi", "mkv"] %}
+                    <video width="500" controls>
+                        <source src="/uploads/{{ file['stored_filename'] }}">
+                        Your browser does not support video playback.
+                    </video>
+
+                {% elif file["file_type"] == "pdf" %}
+
+                    <iframe
+                        src="/uploads/{{ file['stored_filename'] }}"
+                        width="700"
+                        height="500">
+                    </iframe>
+
+                {% elif file["file_type"] == "txt" %}
+
+                    <iframe
+                        src="/uploads/{{ file['stored_filename'] }}"
+                        width="700"
+                        height="300">
+                    </iframe>
+
+                {% else %}
+                    <a href="/uploads/{{ file['stored_filename'] }}" target="_blank">
+                        Open file
+                    </a>
+                {% endif %}
+
+                <form action="/file/{{ file['id'] }}/delete" method="post">
+                    <button
+                        type="submit"
+                        onclick="return confirm('Are you sure you want to delete this file?')">
+                        Delete file
+                    </button>
+                </form>
+
+
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No project files uploaded yet.</p>
+    {% endif %}
+
+
+    <hr>
+
+    <h2>Add Cue</h2>
+
+    <form action="/project/{{ project['id'] }}/add_cue" method="post">
+        <input name="title" autocomplete="off" placeholder="Cue Title" type="text">
+
+        <br><br>
+
+        <input name="start_timecode" autocomplete="off" placeholder="Start Timecode" type="text">
+
+        <br><br>
+
+        <input name="duration" autocomplete="off" placeholder="Duration" type="text">
+
+        <br><br>
+
+        <textarea name="notes" autocomplete="off" placeholder="Cue notes"></textarea>
+
+        <br><br>
+
+        <button type="submit">Add Cue</button>
+    </form>
+
+    <hr>
+
+    <h2>Cues</h2>
+
+    <div class="progress-section">
+        <div class="progress-label">
+            <strong>Progress:</strong> {{ done_cues }} / {{ total_cues }} complete
+        </div>
+
+        <div class="progress-bar">
+            <div 
+                class="progress-fill" 
+                style="width: {{ progress_percent }}%"
+            ></div>
+        </div>
+    </div>
+
+
+{% if cues %}
+    <div class="cue-grid">
+        {% for cue in cues %}
+            <div class="cue-card">
+
+                <div class="cue-header">
+                    <h3>{{ cue["title"] }}</h3>
+
+                    <form class="status-form">
+                        <select data-cue-id="{{ cue['id'] }}" onchange="updateCueStatus(this)">
+                            <option value="Sketching" {% if cue["status"] == "Sketching" %}selected{% endif %}>Sketching</option>
+                            <option value="Orchestrating" {% if cue["status"] == "Orchestrating" %}selected{% endif %}>Orchestrating</option>
+                            <option value="Recording" {% if cue["status"] == "Recording" %}selected{% endif %}>Recording</option>
+                            <option value="Mixing" {% if cue["status"] == "Mixing" %}selected{% endif %}>Mixing</option>
+                            <option value="Done" {% if cue["status"] == "Done" %}selected{% endif %}>Done</option>
+                        </select>
+                    </form>
+                </div>
+
+                <details class="cue-files">
+                    <summary>Cue Files / Upload</summary>
+
+                    <form action="/cue/{{ cue['id'] }}/upload" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file">
+                        <button type="submit">Upload</button>
+                    </form>
+
+                    {% for file in cue_files %}
+                        {% if file["cue_id"] == cue["id"] %}
+                            <div class="file-preview">
+                                <h5>{{ file["original_filename"] }}</h5>
+
+                                {% if file["file_type"] in ["mp3", "wav", "m4a", "flac", "aiff"] %}
+                                    <audio controls>
+                                        <source src="/uploads/{{ file['stored_filename'] }}">
+                                    </audio>
+
+                                {% elif file["file_type"] in ["mp4", "mov", "avi", "mkv"] %}
+                                    <video controls>
+                                        <source src="/uploads/{{ file['stored_filename'] }}">
+                                    </video>
+
+                                {% elif file["file_type"] == "pdf" %}
+
+                                    <iframe
+                                        src="/uploads/{{ file['stored_filename'] }}"
+                                        width="700"
+                                        height="500">
+                                    </iframe>
+
+                                {% elif file["file_type"] == "txt" %}
+
+                                    <iframe
+                                        src="/uploads/{{ file['stored_filename'] }}"
+                                        width="700"
+                                        height="300">
+                                    </iframe>
+
+                                {% else %}
+                                    <a href="/uploads/{{ file['stored_filename'] }}" target="_blank">Open file</a>
+                                {% endif %}
+
+                                <form action="/file/{{ file['id'] }}/delete" method="post">
+                                    <button
+                                        type="submit"
+                                        onclick="return confirm('Are you sure you want to delete this file?')">
+                                        Delete file
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </details>
+
+                <div class="cue-meta">
+                    <strong>Start:</strong> {{ cue["start_timecode"] }}
+                    <p>
+                    <strong>Duration:</strong> {{ cue["duration"] }}
+                </div>
+
+                <p>{{ cue["notes"] }}</p>
+
+                <p>
+                    <a href="/cue/{{ cue['id'] }}/edit">Edit cue</a>
+                </p>
+
+                <form 
+                    action="/cue/{{ cue['id'] }}/delete" 
+                    method="post"
+                    data-title="{{ cue['title'] }}"
+                    onsubmit="return confirmCueDelete(this);"
+                >
+                    <button type="submit">Delete cue</button>
+                </form>
+
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No cues yet.</p>
+{% endif %}
+
+<p>
+
+    <form 
+        action="/project/{{ project['id'] }}/delete" 
+        method="post"
+        data-title="{{ project['title'] }}"
+        onsubmit="return confirmProjectDelete(this);"
+    >
+    <button type="submit">Remove project</button>
+</form>
+
+</p>
+
+{% endblock %}

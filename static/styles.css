@@ -1,0 +1,284 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: #ced8ec;
+}
+
+/* HEADER */
+
+.site-header {
+    background: #020617;
+    color: #e5e7eb;
+    border-bottom: 1px solid #1e293b;
+    padding: 16px 0;
+}
+
+.header-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #f8fafc;
+    font-family: 'Charter', serif;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav a {
+    color: #cbd5e1;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* PAGE */
+
+.page-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 32px auto;
+}
+
+/* CARDS */
+
+.card,
+.cue-card,
+.flash-box {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.card {
+    margin-bottom: 18px;
+}
+
+/* BUTTONS */
+
+.button,
+button {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button:hover,
+button:hover {
+    background: #1d4ed8;
+}
+
+/* INPUTS */
+
+input,
+textarea,
+select {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-top: 6px;
+    background: #020617;
+    color: #e5e7eb;
+    border: 1px solid #334155;
+    border-radius: 6px;
+}
+
+.status-select {
+    max-width: 140px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+}
+
+textarea {
+    min-height: 100px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* FORMS */
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.form-row label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.form-actions {
+    margin-top: 8px;
+}
+
+/* CUE GRID */
+
+.cue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .cue-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* CUE CARD */
+
+.cue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cue-meta {
+    margin: 12px 0;
+    color: #cbd5e1;
+}
+
+/* FILES */
+
+.cue-files {
+    margin-top: 16px;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    background: #020617;
+}
+
+.cue-files summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: #e5e7eb;
+}
+
+.cue-files[open] summary {
+    margin-bottom: 12px;
+}
+
+.cue-files form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.cue-files input[type="file"] {
+    flex: 1;
+}
+
+.file-preview {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #334155;
+}
+
+form[action*="/file/"] {
+    margin-top: 12px;
+}
+
+/* MEDIA */
+
+audio,
+video,
+iframe {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+video {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+/* PROGRESS BAR */
+
+.progress-section {
+    margin: 20px 0;
+}
+
+.progress-label {
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 16px;
+    background: #334155;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 999px;
+}
+
+/* FLASH MODAL */
+
+.flash-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.flash-box {
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+}
+
+.flash-box p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+/* GENERAL */
+
+hr {
+    border: none;
+    border-top: 1px solid #334155;
+    margin: 24px 0;
+}
+
+a {
+    color: #93c5fd;
+}
+
+a:hover {
+    color: #bfdbfe;
+}
