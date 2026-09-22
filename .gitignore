@@ -1,4 +1,4 @@
-# Python virtual environment
+# Virtual environment
 venv/
 
 # Python cache
@@ -8,11 +8,14 @@ __pycache__/
 # Local database
 composerhub.db
 
-# User uploaded files
+# Uploaded files
 uploads/
 
-# Flask session files
+# Flask sessions
 flask_session/
+
+# VS Code settings
+.vscode/
 
 # macOS
 .DS_Store
